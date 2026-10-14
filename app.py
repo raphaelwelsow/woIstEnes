@@ -4,7 +4,21 @@ import streamlit as st
 
 from wo_ist import GEBIETE, adresse, suche
 
-st.set_page_config(page_title="Wo ist mein Donkey?", page_icon="🚲")
+st.set_page_config(page_title="Wo ist mein Donkey?", page_icon="🚲",
+                   initial_sidebar_state="collapsed")
+
+# Fürs Handy: Streamlit-Menü/Footer ausblenden, weniger Rand, größere Bedienelemente
+st.markdown("""
+<style>
+  #MainMenu, footer, header, [data-testid="stToolbar"] {visibility: hidden; height: 0;}
+  .block-container {padding: 1rem 1rem 2rem;}
+  h1 {font-size: 1.8rem !important;}
+  input, .stButton button, .stFormSubmitButton button, .stLinkButton a {
+    font-size: 1.1rem !important; min-height: 3rem;
+  }
+</style>
+""", unsafe_allow_html=True)
+
 st.title("🚲 Wo ist mein Donkey?")
 st.caption("Findet ein Donkey-Republic-Fahrrad anhand seines Namens.")
 
@@ -28,7 +42,7 @@ def finde(name, gebiet):
 with st.form("suche"):
     name = st.text_input("Name des Fahrrads", value="Enes")
     gebiet = st.selectbox("Gebiet", list(GEBIETE), format_func=str.capitalize)
-    los = st.form_submit_button("Suchen", type="primary")
+    los = st.form_submit_button("Suchen", type="primary", use_container_width=True)
 
 if los and name.strip():
     with st.spinner(f"Suche „{name}“ …"):
@@ -43,6 +57,8 @@ if los and name.strip():
             st.markdown(f"**Station:** {r['station']}")
         st.markdown(f"**Adresse:** {r['adresse'] or 'unbekannt'}")
         st.markdown(f"**Status:** {r['status']}")
-        st.map(pd.DataFrame([{"lat": r["lat"], "lon": r["lon"]}]), zoom=15)
-        st.link_button("In Google Maps öffnen",
-                       f"https://maps.google.com/?q={r['lat']},{r['lon']}")
+        # Navigation-Button zuerst: auf dem Handy der wichtigste Klick
+        st.link_button("🧭 Route in Google Maps",
+                       f"https://www.google.com/maps/dir/?api=1&destination={r['lat']},{r['lon']}&travelmode=walking",
+                       type="primary", use_container_width=True)
+        st.map(pd.DataFrame([{"lat": r["lat"], "lon": r["lon"]}]), zoom=15, height=300)
