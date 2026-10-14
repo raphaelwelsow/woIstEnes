@@ -1,0 +1,32 @@
+name: Enes tracken
+
+on:
+  schedule:
+    - cron: "*/30 * * * *"   # alle 30 Minuten (GitHub kann sich um einige Minuten verspäten)
+  workflow_dispatch:          # manuell über den Actions-Tab startbar
+
+permissions:
+  contents: write
+
+concurrency:
+  group: tracker
+  cancel-in-progress: false
+
+jobs:
+  track:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python3 tracker.py Enes
+      - name: Ergebnis committen
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898283+github-actions[bot]@users.noreply.github.com"
+          git add data/verlauf.csv
+          git commit -m "Tracking: $(date -u +'%Y-%m-%d %H:%M') UTC" || exit 0
+          git pull --rebase -q
+          git push
