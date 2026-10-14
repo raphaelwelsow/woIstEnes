@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Prüft einmal, wo ein Fahrrad steht, und hängt das Ergebnis an data/verlauf.csv an.
 
-Wird per GitHub Actions alle 30 Minuten ausgeführt (.github/workflows/tracker.yml).
+Wird per GitHub Actions alle 2 Stunden ausgeführt (.github/workflows/tracker.yml).
 Nutzung lokal: python3 tracker.py [Name]
 """
 import csv

@@ -2,7 +2,7 @@ name: Enes tracken
 
 on:
   schedule:
-    - cron: "*/30 * * * *"   # alle 30 Minuten (GitHub kann sich um einige Minuten verspäten)
+    - cron: "0 */2 * * *"      # alle 2 Stunden (GitHub kann sich um einige Minuten verspäten)
   workflow_dispatch:          # manuell über den Actions-Tab startbar
 
 permissions:

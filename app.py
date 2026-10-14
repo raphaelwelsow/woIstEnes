@@ -70,7 +70,7 @@ with tab_suche:
             st.map(pd.DataFrame([{"lat": r["lat"], "lon": r["lon"]}]), zoom=15, height=300)
 
 
-# ---------- Verlauf (Daten schreibt tracker.py per GitHub Actions alle 30 Min.) ----------
+# ---------- Verlauf (Daten schreibt tracker.py per GitHub Actions alle 2 Std.) ----------
 VERLAUF_URL = "https://raw.githubusercontent.com/raphaelwelsow/woIstEnes/main/data/verlauf.csv"
 VERLAUF_LOKAL = os.path.join(os.path.dirname(os.path.abspath(__file__)), "data", "verlauf.csv")
 
@@ -110,7 +110,7 @@ with tab_verlauf:
         df = None
 
     if df is None or df.empty:
-        st.info("Noch keine Daten – der Tracker prüft alle 30 Minuten.")
+        st.info("Noch keine Daten – der Tracker prüft alle 2 Stunden.")
     else:
         a = aufenthalte(df)
         letzte = df.iloc[-1]
